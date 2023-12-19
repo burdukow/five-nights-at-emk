@@ -21,6 +21,7 @@ div {
     display: flex;
     align-items: center;
     justify-content: center;
+    background: white;
 }
 button {
     width: 150px;
