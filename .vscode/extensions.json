@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "Gruntfuggly.todo-tree",
+        "christian-kohler.path-intellisense",
+        "Gruntfuggly.todo-tree",
+        "eamodio.gitlens"
+    ]
+}
