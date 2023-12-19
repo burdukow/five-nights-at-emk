@@ -1,18 +1,18 @@
-let canvas = document.getElementById("gameZone");
-let context = canvas.getContext("2d");
+let canvas = document.getElementById('gameZone');
+let context = canvas.getContext('2d');
 
 canvas.height = 768;
 canvas.width = 1152;
 
 canvas.addEventListener(
-    "click",
+    'click',
     function (e) {
         var mousePos = getMousePos(canvas, e);
         if (isInside(mousePos, CamButtonRect)) {
-            console.log("Cam clicked!");
+            console.log('Cam clicked!');
         }
         if (isInside(mousePos, DoorButtonRect)) {
-            console.log("Door clicked!");
+            console.log('Door clicked!');
         }
     },
     false,
