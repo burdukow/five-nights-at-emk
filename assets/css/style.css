@@ -21,7 +21,7 @@ div {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: white;
+    background: black;
 }
 button {
     width: 150px;
@@ -33,4 +33,10 @@ button {
     background: white;
     color: black;
     cursor: pointer;
+}
+#gameZone {
+    width: 1152px;
+    height: 768px;
+    margin: auto;
+    background: purple;
 }
