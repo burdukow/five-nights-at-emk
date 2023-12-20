@@ -13,9 +13,9 @@ var DoorButtonRect = {
     height: 250,
 };
 
-function CamButton(CamButtonRect) {
+function drawButton(rect) {
     context.beginPath();
-    context.rect(CamButtonRect.x, CamButtonRect.y, CamButtonRect.width, CamButtonRect.height);
+    context.rect(rect.x, rect.y, rect.width, rect.height);
     context.fillStyle = 'rgba(225,225,225,0.5)';
     context.fill();
     context.lineWidth = 2;
@@ -24,21 +24,20 @@ function CamButton(CamButtonRect) {
     context.closePath();
 }
 
-function DoorButton(DoorButtonRect) {
-    context.beginPath();
-    context.rect(DoorButtonRect.x, DoorButtonRect.y, DoorButtonRect.width, DoorButtonRect.height);
-    context.fillStyle = 'rgba(225,225,225,0.5)';
-    context.fill();
-    context.lineWidth = 2;
-    context.strokeStyle = '#000000';
-    context.stroke();
-    context.closePath();
-}
-
-function DrawBackground(room) {
-    switch (room) {
-        case 'start':
-            image.src = './assets/img/testimage.jpg';
-            context.drawImage(image, image.width / 4, image.height / 4, image.width / 2, image.height / 2, 0, 0, canvas.width, canvas.height);
+function drawBackground(room) {
+    if (room == 'start') {
+        image.src = './assets/img/startsplash.png';
+        image.onload = function () {
+            context.drawImage(image, 0, 0);
+            addCrtLines();
+        };
+    } else if (room == 'main') {
+        image.src = './assets/img/rooms/placeholder.png'; // TODO: Add photos
+        image.onload = function () {
+            context.drawImage(image, 0, 0);
+            drawButton(CamButtonRect);
+            drawButton(DoorButtonRect);
+            addCrtLines();
+        };
     }
 }

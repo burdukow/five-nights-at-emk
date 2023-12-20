@@ -17,3 +17,10 @@ canvas.addEventListener(
     },
     false,
 );
+
+function addCrtLines() {
+    for (var y = 0; y < canvas.height; y += 3) {
+        context.fillStyle = 'rgba(0, 0, 0, .2)';
+        context.fillRect(0, y, canvas.width, 1);
+    }
+}
