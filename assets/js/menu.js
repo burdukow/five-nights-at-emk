@@ -20,6 +20,20 @@ var vapeProgressRect = {
     height: 200,
 };
 
+var vapeChargeButtonRect = {
+    x: 50,
+    y: 700,
+    width: 100,
+    height: 50,
+};
+
+var maskButtonRect = {
+    x: 190,
+    y: 700,
+    width: 400,
+    height: 50,
+};
+
 function drawButton(rect) {
     context.beginPath();
     context.rect(rect.x, rect.y, rect.width, rect.height);
@@ -58,12 +72,13 @@ function drawBackground(room) {
             addCrtLines();
             drawButton(camButtonRect);
             drawButton(doorButtonRect);
+            drawButton(vapeChargeButtonRect);
+            drawButton(maskButtonRect);
             drawProgressBar(vapeProgressRect, color);
             let vapeInterval = setInterval(function () {
                 if (vapeProgress > 0) {
                     vapeProgress -= 1;
                     vapeProgressRect.height = vapeProgress;
-                    vapeProgressRect.y += 1;
                     drawProgressBar(vapeProgressRect, color);
                 } else {
                     alert('Death');
