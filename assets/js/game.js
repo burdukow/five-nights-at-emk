@@ -14,6 +14,16 @@ canvas.addEventListener(
             camOpenClose(camOpened);
             camOpened = !camOpened;
         }
+        if (isInside(mousePos, vapeChargeButtonRect)) {
+            if (vapeProgress + 10 <= 200) {
+                vapeProgress += 10;
+                vapeProgressRect.height = vapeProgress;
+            } else {
+                vapeProgress = 200;
+                vapeProgressRect.height = vapeProgress;
+                vapeProgress.y = 284;
+            }
+        }
         if (isInside(mousePos, doorButtonRect)) {
             console.log('Door clicked!');
         }
