@@ -5,8 +5,9 @@ button_start.addEventListener('click', function () {
     blocks[0].style.zIndex = 1;
     blocks[1].style.zIndex = 2;
     drawBackground('start');
-    document.getElementById('game').classList.add('on');
+    document.getElementById('gameZone').classList.add('on');
     setTimeout(function () {
         drawBackground('main');
-    }, 3000);
+        document.getElementById('gameZone').classList.remove('on');
+    }, 5000);
 });
