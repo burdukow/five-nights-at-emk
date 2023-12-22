@@ -7,10 +7,10 @@ var camButtonRect = {
     height: 50,
 };
 var doorButtonRect = {
-    x: 100,
-    y: 250,
-    width: 100,
-    height: 250,
+    x: 500,
+    y: 350,
+    width: 150,
+    height: 350,
 };
 
 var vapeProgressRect = {
@@ -35,40 +35,47 @@ var maskButtonRect = {
 };
 
 function drawButton(rect) {
-    context.beginPath();
-    context.rect(rect.x, rect.y, rect.width, rect.height);
-    context.fillStyle = 'rgba(225,225,225,0.5)';
-    context.fill();
-    context.lineWidth = 2;
-    context.strokeStyle = '#000000';
-    context.stroke();
-    context.closePath();
+    contextGUI.beginPath();
+    contextGUI.rect(rect.x, rect.y, rect.width, rect.height);
+    contextGUI.fillStyle = 'rgba(225,225,225,0.5)';
+    contextGUI.fill();
+    contextGUI.lineWidth = 2;
+    contextGUI.strokeStyle = '#000000';
+    contextGUI.stroke();
+    contextGUI.closePath();
+}
+
+function drawTime(clockTime) {
+    contextGUI.fillStyle = 'white';
+    contextGUI.textAlign = 'center';
+    contextGUI.textBaseline = 'middle';
+    contextGUI.fillText(clockTime, 1050, 50);
 }
 
 var color = 'rgba(0,255,0,1)';
 
 function drawProgressBar(rect, color) {
-    context.beginPath();
-    context.rect(rect.x, rect.y, rect.width, rect.height);
-    context.fillStyle = color;
-    context.fill();
-    context.lineWidth = 2;
-    context.strokeStyle = '#000000';
-    context.stroke();
-    context.closePath();
+    contextGUI.beginPath();
+    contextGUI.rect(rect.x, rect.y, rect.width, rect.height);
+    contextGUI.fillStyle = color;
+    contextGUI.fill();
+    contextGUI.lineWidth = 2;
+    contextGUI.strokeStyle = '#000000';
+    contextGUI.stroke();
+    contextGUI.closePath();
 }
 
 function drawBackground(room) {
     if (room == 'start') {
         image.src = './assets/img/startsplash.png';
         image.onload = function () {
-            context.drawImage(image, 0, 0);
+            contextBg.drawImage(image, 0, 0);
             addCrtLines();
         };
     } else if (room == 'main') {
-        image.src = './assets/img/rooms/placeholder.png'; // TODO: Add photos
+        image.src = './assets/img/rooms/main_open.png';
         image.onload = function () {
-            context.drawImage(image, 0, 0);
+            contextBg.drawImage(image, 0, 0);
             addCrtLines();
             drawButton(camButtonRect);
             drawButton(doorButtonRect);
@@ -83,15 +90,30 @@ function drawBackground(room) {
                 } else {
                     alert('Death');
                     clearInterval(vapeInterval);
+                    deathScreen();
                 }
-            }, 500);
+            }, 400);
         };
     }
 }
 
 function addCrtLines() {
-    for (var y = 0; y < canvas.height; y += 3) {
-        context.fillStyle = 'rgba(0, 0, 0, .2)';
-        context.fillRect(0, y, canvas.width, 1);
+    for (var y = 0; y < canvasGUI.height; y += 3) {
+        contextGUI.fillStyle = 'rgba(0, 0, 0, .2)';
+        contextGUI.fillRect(0, y, canvasGUI.width, 1);
     }
+}
+
+function deathScreen() {
+    contextGUI.fillStyle = 'rgba(0,0,0,1)';
+    contextGUI.fillRect(0, 0, canvasGUI.width, canvasGUI.height);
+    contextGUI.font = '20px Arial';
+    contextGUI.fillStyle = 'white';
+    contextGUI.textAlign = 'center';
+    contextGUI.textBaseline = 'middle';
+    contextGUI.fillText('СМЭРТ', canvasGUI.width / 2, canvasGUI.height / 2);
+    addCrtLines();
+    setTimeout(() => {
+        window.location.reload();
+    }, 2000);
 }

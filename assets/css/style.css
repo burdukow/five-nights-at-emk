@@ -1,3 +1,7 @@
+@font-face {
+    font-family: 'VT323';
+    src: url('../font/VT323-Regular.ttf');
+}
 * {
     margin: 0;
     padding: 0;
@@ -18,9 +22,11 @@ div {
 }
 #game {
     z-index: 1;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
     background: black;
 }
 button {
@@ -34,10 +40,16 @@ button {
     color: black;
     cursor: pointer;
 }
-#gameZone {
+
+canvas {
     width: 1152px;
     height: 768px;
     margin: auto;
+    position: absolute;
+    background: transparent;
+}
+
+#gameBg {
     background: purple;
 }
 .on {
