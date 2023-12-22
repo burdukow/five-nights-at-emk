@@ -37,7 +37,7 @@ var maskButtonRect = {
 function drawButton(rect) {
     contextGUI.beginPath();
     contextGUI.rect(rect.x, rect.y, rect.width, rect.height);
-    contextGUI.fillStyle = 'rgba(225,225,225,0.5)';
+    contextGUI.fillStyle = 'rgba(225,225,225,0.2)';
     contextGUI.fill();
     contextGUI.lineWidth = 2;
     contextGUI.strokeStyle = '#000000';
@@ -46,13 +46,22 @@ function drawButton(rect) {
 }
 
 function drawTime(clockTime) {
+    contextGUI.clearRect(800, 0, 1050, 100);
     contextGUI.fillStyle = 'white';
     contextGUI.textAlign = 'center';
-    contextGUI.textBaseline = 'middle';
+    contextGUI.strokeStyle = '#000000';
     contextGUI.fillText(clockTime, 1050, 50);
 }
 
-var color = 'rgba(0,255,0,1)';
+function drawVapeCharge(vapeCharge) {
+    contextGUI.clearRect(0, 485, 50, 500);
+    contextGUI.fillStyle = 'white';
+    contextGUI.textAlign = 'center';
+    contextGUI.font = 'bold 22px VT323';
+    contextGUI.strokeText(vapeCharge, 20, 500);
+    contextGUI.font = 'bold 20px VT323';
+    contextGUI.fillText(vapeCharge, 20, 500);
+}
 
 function drawProgressBar(rect, color) {
     contextGUI.beginPath();
@@ -70,23 +79,22 @@ function drawBackground(room) {
         image.src = './assets/img/startsplash.png';
         image.onload = function () {
             contextBg.drawImage(image, 0, 0);
-            addCrtLines();
         };
     } else if (room == 'main') {
         image.src = './assets/img/rooms/main_open.png';
         image.onload = function () {
             contextBg.drawImage(image, 0, 0);
-            addCrtLines();
             drawButton(camButtonRect);
             drawButton(doorButtonRect);
             drawButton(vapeChargeButtonRect);
             drawButton(maskButtonRect);
-            drawProgressBar(vapeProgressRect, color);
+            drawProgressBar(vapeProgressRect, 'rgba(0,255,0,1)');
+            drawVapeCharge(vapeCharge);
             let vapeInterval = setInterval(function () {
                 if (vapeProgress > 0) {
                     vapeProgress -= 1;
                     vapeProgressRect.height = vapeProgress;
-                    drawProgressBar(vapeProgressRect, color);
+                    drawProgressBar(vapeProgressRect, 'rgba(0,255,0,1)');
                 } else {
                     alert('Death');
                     clearInterval(vapeInterval);
@@ -94,25 +102,30 @@ function drawBackground(room) {
                 }
             }, 400);
         };
+    } else if (room == 'A1') {
+        image.src = './assets/img/rooms/A1.png';
+        image.onload = function () {
+            contextBg.drawImage(image, 0, 0);
+            addCrtLines();
+        };
     }
 }
 
 function addCrtLines() {
-    for (var y = 0; y < canvasGUI.height; y += 3) {
-        contextGUI.fillStyle = 'rgba(0, 0, 0, .2)';
-        contextGUI.fillRect(0, y, canvasGUI.width, 1);
+    for (var y = 0; y < canvasBg.height; y += 3) {
+        contextBg.fillStyle = 'rgba(0, 0, 0, .6)';
+        contextBg.fillRect(0, y, canvasBg.width, 1);
     }
 }
 
 function deathScreen() {
     contextGUI.fillStyle = 'rgba(0,0,0,1)';
     contextGUI.fillRect(0, 0, canvasGUI.width, canvasGUI.height);
-    contextGUI.font = '20px Arial';
+    contextGUI.font = '48px Arial';
     contextGUI.fillStyle = 'white';
     contextGUI.textAlign = 'center';
     contextGUI.textBaseline = 'middle';
     contextGUI.fillText('СМЭРТ', canvasGUI.width / 2, canvasGUI.height / 2);
-    addCrtLines();
     setTimeout(() => {
         window.location.reload();
     }, 2000);

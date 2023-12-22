@@ -15,20 +15,23 @@ contextGUI.font = '72px VT323';
 let camOpened = false;
 let doorOpened = true;
 let vapeProgress = 200;
+let vapeCharge = 50;
+
+let curRoom = 'A1';
 
 let gameMap = {
     rooms: [
-        { name: 'A1', animatronics: ['Student'], canMove: ['Student', 'Katya', 'Dima'] },
+        { name: 'A1', animatronics: ['Student'], canMove: ['Student'] },
         { name: 'A2', animatronics: [], canMove: ['Student', 'Maxim'] },
         { name: 'main', animatronics: [], canMove: [] },
-        { name: 'A3', animatronics: ['Katya'], canMove: [] },
-        { name: 'B1', animatronics: ['Dima'], canMove: [] },
+        { name: 'A3', animatronics: ['Katya'], canMove: ['Katya'] },
+        { name: 'B1', animatronics: ['Dima'], canMove: ['Dima'] },
         { name: 'B2', animatronics: [], canMove: [] },
-        { name: 'B1', animatronics: [], canMove: [] },
-        { name: 'staircase', animatronics: [], canMove: [] },
-        { name: 'C1', animatronics: [], canMove: [] },
+        { name: 'B3', animatronics: [], canMove: ['Dima'] },
+        { name: 'staircase', animatronics: [], canMove: ['ZamDir', 'Maxim'] },
+        { name: 'C1', animatronics: [], canMove: ['Katya'] },
         { name: 'hall', animatronics: [], canMove: [] },
-        { name: 'outside', animatronics: ['ZamDir', 'Maxim'], canMove: ['Dima'] },
+        { name: 'outside', animatronics: ['ZamDir', 'Maxim'], canMove: ['Dima', 'ZamDir', 'Maxim'] },
     ],
 
     getAnimatronics: function (roomName) {
@@ -43,61 +46,83 @@ let gameMap = {
         if (from && to) {
             const index = from.animatronics.indexOf(animatronicName);
             if (index !== -1) {
-                from.animatronics.splice(index, 1);
-                to.animatronics.push(animatronicName);
-                console.log(`${animatronicName} moved from ${roomFrom} to ${roomTo}.`);
+                if (this.canAnimatronicsMoveTo(animatronicName, roomTo)) {
+                    from.animatronics.splice(index, 1);
+                    to.animatronics.push(animatronicName);
+                    console.log(`${animatronicName} moved from ${roomFrom} to ${roomTo}.`);
+                }
             }
         }
+    },
+
+    canAnimatronicsMoveTo: function (animName, roomToGo) {
+        const to = this.rooms.find((room) => room.name === roomToGo);
+        if (to.canMove.length === 0) {
+            return true;
+        }
+        if (to.canMove.includes(animName)) {
+            return true;
+        }
+        return false;
     },
 };
 
-canvasGUI.addEventListener(
-    'click',
-    function (e) {
-        var mousePos = getMousePos(canvasGUI, e);
-        if (isInside(mousePos, camButtonRect)) {
-            camOpenClose(camOpened);
-            camOpened = !camOpened;
-        }
-        if (isInside(mousePos, vapeChargeButtonRect)) {
-            if (vapeProgress + 5 <= 200) {
-                vapeProgress += 5;
-                vapeProgressRect.height = vapeProgress;
-            } else {
-                vapeProgress = 200;
-                vapeProgressRect.height = vapeProgress;
-                vapeProgress.y = 284;
+function activeGUI() {
+    canvasGUI.addEventListener(
+        'click',
+        function (e) {
+            var mousePos = getMousePos(canvasGUI, e);
+            if (isInside(mousePos, camButtonRect)) {
+                camOpenClose(camOpened);
+                camOpened = !camOpened;
             }
-        }
-        if (isInside(mousePos, doorButtonRect)) {
-            doorOpened = !doorOpened;
-            if (doorOpened) {
-                image.src = './assets/img/rooms/main_open.png';
-                image.onload = function () {
-                    contextBg.drawImage(image, 0, 0);
-                };
-            } else {
-                image.src = './assets/img/rooms/main_closed.png';
-                image.onload = function () {
-                    contextBg.drawImage(image, 0, 0);
-                };
+            if (isInside(mousePos, vapeChargeButtonRect)) {
+                if (vapeCharge > 0) {
+                    if (vapeProgress + 5 <= 200) {
+                        vapeProgress += 5;
+                        vapeProgressRect.height = vapeProgress;
+                        vapeCharge -= 1;
+                        drawVapeCharge(vapeCharge);
+                    } else {
+                        vapeProgress = 200;
+                        vapeProgressRect.height = vapeProgress;
+                        vapeProgress.y = 284;
+                        vapeCharge -= 1;
+                        drawVapeCharge(vapeCharge);
+                    }
+                }
             }
-        }
-    },
-    false,
-);
+            if (isInside(mousePos, doorButtonRect)) {
+                doorOpened = !doorOpened;
+                doorOpenClose(doorOpened);
+            }
+        },
+        false,
+    );
+}
 
 function camOpenClose(isCamOpened) {
     if (isCamOpened) {
         document.getElementById('game').classList.add('off');
         setTimeout(function () {
             document.getElementById('game').classList.remove('off');
+            doorOpenClose(doorOpened);
         }, 500);
     } else {
-        openCamera();
+        drawBackground(curRoom);
     }
 }
 
-function openCamera() {
-    console.log('WIP');
+function doorOpenClose(isDoorOpened) {
+    if (isDoorOpened) {
+        image.src = './assets/img/rooms/main_open.png';
+        image.onload = function () {
+            contextBg.drawImage(image, 0, 0);
+        };
+    } else {
+        image.src = './assets/img/rooms/main_closed.png';
+        image.onload = function () {
+            contextBg.drawImage(image, 0, 0);
+        };
+    }
 }
