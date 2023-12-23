@@ -1,13 +1,18 @@
 let canvasGUI = document.getElementById('gameGUI');
 let contextGUI = canvasGUI.getContext('2d');
+let canvasZone = document.getElementById('gameZone');
+let contextZone = canvasZone.getContext('2d');
 let canvasBg = document.getElementById('gameBackground');
 let contextBg = canvasBg.getContext('2d');
 
 canvasBg.style.zIndex = 3;
+canvasZone.style.zIndex = 4;
 canvasGUI.style.zIndex = 5;
 
 canvasGUI.height = 768;
 canvasGUI.width = 1152;
+canvasZone.height = 768;
+canvasZone.width = 1152;
 canvasBg.height = 768;
 canvasBg.width = 1152;
 contextGUI.font = '72px VT323';
@@ -67,6 +72,16 @@ let gameMap = {
     },
 };
 
+function checkRoom(roomName) {
+    roomCheck = gameMap.rooms.find((room) => room.name === roomName);
+    if (roomCheck.animatronics.includes('Student')) {
+        image.src = './assets/img/animatronics/student.png';
+        image.onload = function () {
+            contextZone.drawImage(image, 800, 350, 200, 200);
+        };
+    }
+}
+
 function activeGUI() {
     canvasGUI.addEventListener(
         'click',
@@ -78,8 +93,8 @@ function activeGUI() {
             }
             if (isInside(mousePos, vapeChargeButtonRect)) {
                 if (vapeCharge > 0) {
-                    if (vapeProgress + 5 <= 200) {
-                        vapeProgress += 5;
+                    if (vapeProgress + 10 <= 200) {
+                        vapeProgress += 10;
                         vapeProgressRect.height = vapeProgress;
                         vapeCharge -= 1;
                         drawVapeCharge(vapeCharge);
@@ -114,15 +129,16 @@ function camOpenClose(isCamOpened) {
 }
 
 function doorOpenClose(isDoorOpened) {
+    contextZone.clearRect(0, 0, 1152, 768);
     if (isDoorOpened) {
-        image.src = './assets/img/rooms/main_open.png';
-        image.onload = function () {
-            contextBg.drawImage(image, 0, 0);
+        imageBg.src = './assets/img/rooms/main_open.png';
+        imageBg.onload = function () {
+            contextBg.drawImage(imageBg, 0, 0);
         };
     } else {
-        image.src = './assets/img/rooms/main_closed.png';
-        image.onload = function () {
-            contextBg.drawImage(image, 0, 0);
+        imageBg.src = './assets/img/rooms/main_closed.png';
+        imageBg.onload = function () {
+            contextBg.drawImage(imageBg, 0, 0);
         };
     }
 }

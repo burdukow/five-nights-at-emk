@@ -1,4 +1,5 @@
 var image = new Image();
+var imageBg = new Image();
 
 var camButtonRect = {
     x: 600,
@@ -54,7 +55,7 @@ function drawTime(clockTime) {
 }
 
 function drawVapeCharge(vapeCharge) {
-    contextGUI.clearRect(0, 485, 50, 500);
+    contextGUI.clearRect(0, 485, 50, 50);
     contextGUI.fillStyle = 'white';
     contextGUI.textAlign = 'center';
     contextGUI.font = 'bold 22px VT323';
@@ -76,14 +77,14 @@ function drawProgressBar(rect, color) {
 
 function drawBackground(room) {
     if (room == 'start') {
-        image.src = './assets/img/startsplash.png';
-        image.onload = function () {
-            contextBg.drawImage(image, 0, 0);
+        imageBg.src = './assets/img/startsplash.png';
+        imageBg.onload = function () {
+            contextBg.drawImage(imageBg, 0, 0);
         };
     } else if (room == 'main') {
-        image.src = './assets/img/rooms/main_open.png';
-        image.onload = function () {
-            contextBg.drawImage(image, 0, 0);
+        imageBg.src = './assets/img/rooms/main_open.png';
+        imageBg.onload = function () {
+            contextBg.drawImage(imageBg, 0, 0);
             drawButton(camButtonRect);
             drawButton(doorButtonRect);
             drawButton(vapeChargeButtonRect);
@@ -103,11 +104,12 @@ function drawBackground(room) {
             }, 400);
         };
     } else if (room == 'A1') {
-        image.src = './assets/img/rooms/A1.png';
+        imageBg.src = './assets/img/rooms/A1.png';
         image.onload = function () {
-            contextBg.drawImage(image, 0, 0);
+            contextBg.drawImage(imageBg, 0, 0);
             addCrtLines();
         };
+        checkRoom(room);
     }
 }
 
