@@ -76,40 +76,52 @@ function drawProgressBar(rect, color) {
 }
 
 function drawBackground(room) {
-    if (room == 'start') {
-        imageBg.src = './assets/img/startsplash.png';
-        imageBg.onload = function () {
-            contextBg.drawImage(imageBg, 0, 0);
-        };
-    } else if (room == 'main') {
-        imageBg.src = './assets/img/rooms/main_open.png';
-        imageBg.onload = function () {
-            contextBg.drawImage(imageBg, 0, 0);
-            drawButton(camButtonRect);
-            drawButton(doorButtonRect);
-            drawButton(vapeChargeButtonRect);
-            drawButton(maskButtonRect);
-            drawProgressBar(vapeProgressRect, 'rgba(0,255,0,1)');
-            drawVapeCharge(vapeCharge);
-            let vapeInterval = setInterval(function () {
-                if (vapeProgress > 0) {
-                    vapeProgress -= 1;
-                    vapeProgressRect.height = vapeProgress;
-                    drawProgressBar(vapeProgressRect, 'rgba(0,255,0,1)');
-                } else {
-                    alert('Death');
-                    clearInterval(vapeInterval);
-                    deathScreen();
-                }
-            }, 400);
-        };
-    } else if (room == 'A1') {
-        imageBg.src = './assets/img/rooms/A1.png';
-        image.onload = function () {
-            contextBg.drawImage(imageBg, 0, 0);
-            addCrtLines();
-        };
-        checkRoom(room);
+    switch (room) {
+        case 'start':
+            imageBg.src = './assets/img/startsplash.png';
+            imageBg.onload = function () {
+                contextBg.drawImage(imageBg, 0, 0);
+            };
+            break;
+        case 'main':
+            imageBg.src = './assets/img/rooms/main_open.png';
+            imageBg.onload = function () {
+                contextBg.drawImage(imageBg, 0, 0);
+                drawButton(camButtonRect);
+                drawButton(doorButtonRect);
+                drawButton(vapeChargeButtonRect);
+                drawButton(maskButtonRect);
+                drawProgressBar(vapeProgressRect, 'rgba(0,255,0,1)');
+                drawVapeCharge(vapeCharge);
+                let vapeInterval = setInterval(function () {
+                    if (vapeProgress > 0) {
+                        vapeProgress -= 1;
+                        vapeProgressRect.height = vapeProgress;
+                        drawProgressBar(vapeProgressRect, 'rgba(0,255,0,1)');
+                    } else {
+                        alert('Death');
+                        clearInterval(vapeInterval);
+                        deathScreen();
+                    }
+                }, 400);
+            };
+            break;
+        case 'A1':
+            imageBg.src = './assets/img/rooms/A1.png';
+            imageBg.onload = function () {
+                contextBg.drawImage(imageBg, 0, 0);
+                addCrtLines();
+            };
+            checkRoom(room);
+            break;
+        case 'A3':
+            imageBg.src = './assets/img/rooms/A3.png';
+            imageBg.onload = function () {
+                contextBg.drawImage(imageBg, 0, 0);
+                addCrtLines();
+            };
+            checkRoom(room);
+            break;
     }
 }
 
