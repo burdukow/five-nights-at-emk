@@ -93,17 +93,6 @@ function drawBackground(room) {
                 drawButton(maskButtonRect);
                 drawProgressBar(vapeProgressRect, 'rgba(0,255,0,1)');
                 drawVapeCharge(vapeCharge);
-                let vapeInterval = setInterval(function () {
-                    if (vapeProgress > 0) {
-                        vapeProgress -= 1;
-                        vapeProgressRect.height = vapeProgress;
-                        drawProgressBar(vapeProgressRect, 'rgba(0,255,0,1)');
-                    } else {
-                        alert('Death');
-                        clearInterval(vapeInterval);
-                        deathScreen();
-                    }
-                }, 400);
             };
             break;
         case 'A1':
@@ -134,6 +123,7 @@ function addCrtLines() {
 
 function deathScreen() {
     contextGUI.fillStyle = 'rgba(0,0,0,1)';
+    clearInterval(vapeIntervalId);
     contextGUI.fillRect(0, 0, canvasGUI.width, canvasGUI.height);
     contextGUI.font = '48px Arial';
     contextGUI.fillStyle = 'white';
