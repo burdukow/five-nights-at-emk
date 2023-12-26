@@ -73,12 +73,23 @@ let gameMap = {
 };
 
 function checkRoom(roomName) {
-    roomCheck = gameMap.rooms.find((room) => room.name === roomName);
-    if (roomCheck.animatronics.includes('Student')) {
-        image.src = './assets/img/animatronics/student.png';
-        image.onload = function () {
-            contextZone.drawImage(image, 800, 350, 200, 200);
-        };
+    switch (roomName) {
+        case 'A1':
+            if (gameMap.getAnimatronics(roomName).includes('Student')) {
+                image.src = './assets/img/animatronics/student.png';
+                image.onload = function () {
+                    contextZone.drawImage(image, 800, 350, 200, 200);
+                };
+            }
+            break;
+        case 'A2':
+            if (gameMap.getAnimatronics(roomName).includes('Student')) {
+                image.src = './assets/img/animatronics/student.png';
+                image.onload = function () {
+                    contextZone.drawImage(image, 800, 350, 200, 200); // TODO edit position
+                };
+            }
+            break;
     }
 }
 
@@ -93,8 +104,8 @@ function activeGUI() {
             }
             if (isInside(mousePos, vapeChargeButtonRect)) {
                 if (vapeCharge > 0) {
-                    if (vapeProgress + 10 <= 200) {
-                        vapeProgress += 10;
+                    if (vapeProgress + 20 <= 200) {
+                        vapeProgress += 20;
                         vapeProgressRect.height = vapeProgress;
                         vapeCharge -= 1;
                         drawVapeCharge(vapeCharge);
