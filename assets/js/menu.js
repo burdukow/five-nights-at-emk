@@ -130,7 +130,10 @@ function deathScreen() {
     contextGUI.textAlign = 'center';
     contextGUI.textBaseline = 'middle';
     contextGUI.fillText('СМЭРТ', canvasGUI.width / 2, canvasGUI.height / 2);
+    gameAudio.pause();
+    audio.src = './assets/sounds/breathing.mp3';
+    audio.play();
     setTimeout(() => {
         window.location.reload();
-    }, 2000);
+    }, 7000);
 }
