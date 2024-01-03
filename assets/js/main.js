@@ -15,6 +15,14 @@ function vapeInterval() {
         }
     }, 400);
 }
+
+// function randomAnimatronicMove() {
+//     return setInterval(function () {
+//         let animatronics = ['Student', 'Maxim', 'Katya', 'Dima', 'ZamDir']; // TODO
+//         gameMap.getAccessibleRooms();
+//     }, 156);
+// }
+
 var vapeIntervalID;
 
 button_start.addEventListener('click', function () {
@@ -23,6 +31,9 @@ button_start.addEventListener('click', function () {
         drawBackground('main');
         document.getElementById('gameBackground').classList.remove('on');
         activeGUI();
+        audio.src = './assets/sounds/pc_on.mp3';
+        audio.loop = true;
+        audio.play();
         drawTime(clock[clockIndex]);
         vapeIntervalId = vapeInterval();
         setInterval(() => {
@@ -38,6 +49,10 @@ button_start.addEventListener('click', function () {
 
 function startGame() {
     blocks[0].style.zIndex = 1;
+    blocks[0].style.width = 0;
+    blocks[0].style.height = 0;
+    audio.src = './assets/sounds/start_game.mp3';
+    audio.play();
     button_start.disabled = true;
     button_start.style.visibility = 'hidden';
     blocks[1].style.zIndex = 2;

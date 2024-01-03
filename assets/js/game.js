@@ -9,6 +9,9 @@ canvasBg.style.zIndex = 3;
 canvasZone.style.zIndex = 4;
 canvasGUI.style.zIndex = 5;
 
+var audio = new Audio();
+var gameAudio = new Audio();
+
 canvasGUI.height = 768;
 canvasGUI.width = 1152;
 canvasZone.height = 768;
@@ -44,17 +47,23 @@ let gameMap = {
         return room ? room.animatronics : [];
     },
 
-    moveAnimatronics: function (animatronicName, roomFrom, roomTo) {
-        const from = this.rooms.find((room) => room.name === roomFrom);
-        const to = this.rooms.find((room) => room.name === roomTo);
+    getAccessibleRooms: function (animatronicName) {
+        let accessibleRooms = [];
+        this.rooms.forEach((el) => {
+            el.canMove.includes(animatronicName) ? accessibleRooms.push(el.name) : '';
+        });
+    },
 
+    moveAnimatronics: function (animatronicName, roomFrom, roomTo) {
+        const to = this.rooms.find((room) => room.name === roomTo);
+        const from = this.rooms.find((room) => room.name === roomFrom);
         if (from && to) {
             const index = from.animatronics.indexOf(animatronicName);
             if (index !== -1) {
                 if (this.canAnimatronicsMoveTo(animatronicName, roomTo)) {
                     from.animatronics.splice(index, 1);
                     to.animatronics.push(animatronicName);
-                    console.log(`${animatronicName} moved from ${roomFrom} to ${roomTo}.`);
+                    console.log(`${animatronicName} moved to ${roomTo}.`);
                 }
             }
         }
@@ -76,6 +85,8 @@ function checkRoom(roomName) {
     switch (roomName) {
         case 'A1':
             if (gameMap.getAnimatronics(roomName).includes('Student')) {
+                gameAudio.src = './assets/sounds/static_camera.mp3';
+                gameAudio.play();
                 image.src = './assets/img/animatronics/student.png';
                 image.onload = function () {
                     contextZone.drawImage(image, 800, 350, 200, 200);
@@ -84,6 +95,8 @@ function checkRoom(roomName) {
             break;
         case 'A2':
             if (gameMap.getAnimatronics(roomName).includes('Student')) {
+                gameAudio.src = './assets/sounds/static_camera.mp3';
+                gameAudio.play();
                 image.src = './assets/img/animatronics/student.png';
                 image.onload = function () {
                     contextZone.drawImage(image, 800, 350, 200, 200); // TODO edit position
@@ -104,6 +117,8 @@ function activeGUI() {
             }
             if (isInside(mousePos, vapeChargeButtonRect)) {
                 if (vapeCharge > 0) {
+                    gameAudio.src = './assets/sounds/vape.mp3';
+                    gameAudio.play();
                     if (vapeProgress + 20 <= 200) {
                         vapeProgress += 20;
                         vapeProgressRect.height = vapeProgress;
@@ -119,6 +134,13 @@ function activeGUI() {
                 }
             }
             if (isInside(mousePos, doorButtonRect)) {
+                if (doorOpened) {
+                    gameAudio.src = './assets/sounds/door_key_lock.mp3';
+                    gameAudio.play();
+                } else {
+                    gameAudio.src = './assets/sounds/door_open.mp3';
+                    gameAudio.play();
+                }
                 doorOpened = !doorOpened;
                 doorOpenClose(doorOpened);
             }
@@ -129,12 +151,16 @@ function activeGUI() {
 
 function camOpenClose(isCamOpened) {
     if (isCamOpened) {
+        gameAudio.src = './assets/sounds/camera_off.mp3';
+        gameAudio.play();
         document.getElementById('game').classList.add('off');
         setTimeout(function () {
             document.getElementById('game').classList.remove('off');
             doorOpenClose(doorOpened);
         }, 500);
     } else {
+        gameAudio.src = './assets/sounds/camera_on.mp3';
+        gameAudio.play();
         drawBackground(curRoom);
     }
 }
