@@ -6,6 +6,7 @@
     margin: 0;
     padding: 0;
     font-family: 'VT323';
+    background: black;
 }
 div {
     width: 100%;
@@ -19,7 +20,8 @@ div {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: black;
+    background: url('../img/menu.gif') no-repeat center;
+    background-size: 1152px 768px;
 }
 #game {
     z-index: 1;
@@ -28,7 +30,6 @@ div {
     align-items: center;
     justify-content: center;
     position: relative;
-    background: black;
 }
 button {
     width: 150px;
