@@ -16,13 +16,6 @@ function vapeInterval() {
     }, 400);
 }
 
-// function randomAnimatronicMove() {
-//     return setInterval(function () {
-//         let animatronics = ['Student', 'Maxim', 'Katya', 'Dima', 'ZamDir']; // TODO
-//         gameMap.getAccessibleRooms();
-//     }, 156);
-// }
-
 var vapeIntervalID;
 
 button_start.addEventListener('click', function () {
@@ -30,10 +23,11 @@ button_start.addEventListener('click', function () {
     setTimeout(function () {
         drawBackground('main');
         document.getElementById('gameBackground').classList.remove('on');
-        activeGUI();
+        canvasGUI.addEventListener('click', activeGUI, false);
         audio.src = './assets/sounds/pc_on.mp3';
         audio.loop = true;
         audio.play();
+        randomAnimatronicMove();
         drawTime(clock[clockIndex]);
         vapeIntervalId = vapeInterval();
         setInterval(() => {
@@ -43,7 +37,7 @@ button_start.addEventListener('click', function () {
             } else {
                 drawTime(clock[clockIndex]);
             }
-        }, 150000);
+        }, 60000);
     }, 5000);
 });
 
@@ -61,14 +55,17 @@ function startGame() {
 }
 
 function endGame() {
-    clearInterval(vapeIntervalId);
-    contextBg.clearRect(0, 0, canvasBg.width, canvasBg.height);
+    canvasGUI.removeEventListener('click', activeGUI, false);
     contextGUI.fillStyle = 'rgba(0,0,0,1)';
+    clearInterval(vapeIntervalId);
     contextGUI.fillRect(0, 0, canvasGUI.width, canvasGUI.height);
-    contextZone.clearRect(0, 0, canvasZone.width, canvasZone.height);
     contextGUI.font = '48px Arial';
     contextGUI.fillStyle = 'white';
     contextGUI.textAlign = 'center';
     contextGUI.textBaseline = 'middle';
+    gameAudio.pause();
     contextGUI.fillText('6PM', canvasGUI.width / 2, canvasGUI.height / 2);
+    setTimeout(() => {
+        window.location.reload();
+    }, 7000);
 }
