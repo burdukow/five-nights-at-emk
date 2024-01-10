@@ -24,8 +24,11 @@ let camOpened = false;
 let doorOpened = true;
 let vapeProgress = 200;
 let vapeCharge = 50;
+let canVapeBusted = false;
 
 let curRoom = 'A1';
+
+let animatronicsc = ['Student', 'Maxim', 'Katya', 'Dima', 'ZamDir'];
 
 let gameMap = {
     rooms: [
@@ -54,10 +57,19 @@ let gameMap = {
         });
     },
 
-    moveAnimatronics: function (animatronicName, roomFrom, roomTo) {
+    findRoomByAnimatronic: function (animatronicName) {
+        for (const room of this.rooms) {
+            if (room.animatronics.includes(animatronicName)) {
+                return room;
+            }
+        }
+        return null;
+    },
+
+    moveAnimatronics: function (animatronicName, roomTo) {
         const to = this.rooms.find((room) => room.name === roomTo);
-        const from = this.rooms.find((room) => room.name === roomFrom);
-        if (from && to) {
+        if (to) {
+            const from = this.findRoomByAnimatronic(animatronicName);
             const index = from.animatronics.indexOf(animatronicName);
             if (index !== -1) {
                 if (this.canAnimatronicsMoveTo(animatronicName, roomTo)) {
@@ -80,6 +92,12 @@ let gameMap = {
         return false;
     },
 };
+
+// function randomAnimatronicMove() {
+//     return setInterval(function () {
+//         gameMap.getAccessibleRooms();
+//     }, 156);
+// }
 
 function checkRoom(roomName) {
     switch (roomName) {
@@ -106,47 +124,45 @@ function checkRoom(roomName) {
     }
 }
 
-function activeGUI() {
-    canvasGUI.addEventListener(
-        'click',
-        function (e) {
-            var mousePos = getMousePos(canvasGUI, e);
-            if (isInside(mousePos, camButtonRect)) {
-                camOpenClose(camOpened);
-                camOpened = !camOpened;
+function activeGUI(e) {
+    var mousePos = getMousePos(canvasGUI, e);
+    if (isInside(mousePos, camButtonRect)) {
+        camOpenClose(camOpened);
+        camOpened = !camOpened;
+    }
+    if (isInside(mousePos, vapeChargeButtonRect)) {
+        if (vapeCharge > 0) {
+            canVapeBusted = true;
+            gameAudio.src = './assets/sounds/vape.mp3';
+            gameAudio.play();
+            if (vapeProgress + 20 <= 200) {
+                vapeProgress += 20;
+                vapeProgressRect.height = vapeProgress;
+                vapeCharge -= 1;
+                drawVapeCharge(vapeCharge);
+            } else {
+                vapeProgress = 200;
+                vapeProgressRect.height = vapeProgress;
+                vapeProgress.y = 284;
+                vapeCharge -= 1;
+                drawVapeCharge(vapeCharge);
             }
-            if (isInside(mousePos, vapeChargeButtonRect)) {
-                if (vapeCharge > 0) {
-                    gameAudio.src = './assets/sounds/vape.mp3';
-                    gameAudio.play();
-                    if (vapeProgress + 20 <= 200) {
-                        vapeProgress += 20;
-                        vapeProgressRect.height = vapeProgress;
-                        vapeCharge -= 1;
-                        drawVapeCharge(vapeCharge);
-                    } else {
-                        vapeProgress = 200;
-                        vapeProgressRect.height = vapeProgress;
-                        vapeProgress.y = 284;
-                        vapeCharge -= 1;
-                        drawVapeCharge(vapeCharge);
-                    }
-                }
-            }
-            if (isInside(mousePos, doorButtonRect)) {
-                if (doorOpened) {
-                    gameAudio.src = './assets/sounds/door_key_lock.mp3';
-                    gameAudio.play();
-                } else {
-                    gameAudio.src = './assets/sounds/door_open.mp3';
-                    gameAudio.play();
-                }
-                doorOpened = !doorOpened;
-                doorOpenClose(doorOpened);
-            }
-        },
-        false,
-    );
+            setTimeout(() => {
+                canVapeBusted = false;
+            }, 7000);
+        }
+    }
+    if (isInside(mousePos, doorButtonRect)) {
+        if (doorOpened) {
+            gameAudio.src = './assets/sounds/door_key_lock.mp3';
+            gameAudio.play();
+        } else {
+            gameAudio.src = './assets/sounds/door_open.mp3';
+            gameAudio.play();
+        }
+        doorOpened = !doorOpened;
+        doorOpenClose(doorOpened);
+    }
 }
 
 function camOpenClose(isCamOpened) {
