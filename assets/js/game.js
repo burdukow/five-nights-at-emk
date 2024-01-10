@@ -28,7 +28,7 @@ let canVapeBusted = false;
 
 let curRoom = 'A1';
 
-let animatronicsc = ['Student', 'Maxim', 'Katya', 'Dima', 'ZamDir'];
+let animatronicsList = ['Student', 'Maxim', 'Katya', 'Dima', 'ZamDir'];
 
 let gameMap = {
     rooms: [
@@ -55,6 +55,7 @@ let gameMap = {
         this.rooms.forEach((el) => {
             el.canMove.includes(animatronicName) ? accessibleRooms.push(el.name) : '';
         });
+        return accessibleRooms;
     },
 
     findRoomByAnimatronic: function (animatronicName) {
@@ -93,11 +94,13 @@ let gameMap = {
     },
 };
 
-// function randomAnimatronicMove() {
-//     return setInterval(function () {
-//         gameMap.getAccessibleRooms();
-//     }, 156);
-// }
+function randomAnimatronicMove() {
+    let rndAnimatronic = animatronicsList[Math.floor(Math.random() * animatronicsList.length)];
+    let rndRoom = gameMap.getAccessibleRooms(rndAnimatronic)[Math.floor(Math.random() * gameMap.getAccessibleRooms(rndAnimatronic).length)];
+    gameMap.moveAnimatronics(rndAnimatronic, rndRoom);
+    const randomInterval = Math.floor(Math.random() * (30000 - 10000) + 10000);
+    setTimeout(randomAnimatronicMove, randomInterval);
+}
 
 function checkRoom(roomName) {
     switch (roomName) {
@@ -121,6 +124,7 @@ function checkRoom(roomName) {
                 };
             }
             break;
+        // TODO add more :P
     }
 }
 

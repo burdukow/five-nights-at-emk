@@ -27,6 +27,7 @@ button_start.addEventListener('click', function () {
         audio.src = './assets/sounds/pc_on.mp3';
         audio.loop = true;
         audio.play();
+        randomAnimatronicMove();
         drawTime(clock[clockIndex]);
         vapeIntervalId = vapeInterval();
         setInterval(() => {
