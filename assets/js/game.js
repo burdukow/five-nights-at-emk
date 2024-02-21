@@ -32,16 +32,9 @@ let animatronicsList = ['Student', 'Maxim', 'Katya', 'Dima', 'ZamDir'];
 
 let gameMap = {
     rooms: [
-        { name: 'A1', animatronics: ['Student'], canMove: ['Student'] },
-        { name: 'A2', animatronics: [], canMove: ['Student', 'Maxim'] },
-        { name: 'main', animatronics: [], canMove: [] },
-        { name: 'A3', animatronics: ['Katya'], canMove: ['Katya'] },
-        { name: 'B1', animatronics: ['Dima'], canMove: ['Dima'] },
-        { name: 'B2', animatronics: [], canMove: [] },
-        { name: 'B3', animatronics: [], canMove: ['Dima'] },
-        { name: 'staircase', animatronics: [], canMove: ['ZamDir', 'Maxim'] },
-        { name: 'C1', animatronics: [], canMove: ['Katya'] },
-        { name: 'hall', animatronics: [], canMove: [] },
+        { name: 'A1', animatronics: ['Student'], canMove: ['Student', 'Katya', 'Dima'] },
+        { name: 'main', animatronics: [], canMove: ['Student', 'Maxim', 'Katya', 'Dima', 'ZamDir'] },
+        { name: 'A3', animatronics: ['Katya', 'Dima'], canMove: ['Katya', 'Dima', 'Student'] },
         { name: 'outside', animatronics: ['ZamDir', 'Maxim'], canMove: ['Dima', 'ZamDir', 'Maxim'] },
     ],
 
@@ -97,6 +90,9 @@ let gameMap = {
 function randomAnimatronicMove() {
     let rndAnimatronic = animatronicsList[Math.floor(Math.random() * animatronicsList.length)];
     let rndRoom = gameMap.getAccessibleRooms(rndAnimatronic)[Math.floor(Math.random() * gameMap.getAccessibleRooms(rndAnimatronic).length)];
+    if (rndAnimatronic == 'ZamDir' && !doorOpened) {
+        playScreamer(rndAnimatronic);
+    }
     gameMap.moveAnimatronics(rndAnimatronic, rndRoom);
     const randomInterval = Math.floor(Math.random() * (30000 - 10000) + 10000);
     setTimeout(randomAnimatronicMove, randomInterval);
@@ -114,7 +110,7 @@ function checkRoom(roomName) {
                 };
             }
             break;
-        case 'A2':
+        case 'A3':
             if (gameMap.getAnimatronics(roomName).includes('Student')) {
                 gameAudio.src = './assets/sounds/static_camera.mp3';
                 gameAudio.play();
@@ -124,7 +120,8 @@ function checkRoom(roomName) {
                 };
             }
             break;
-        // TODO add more :P
+        case 'main':
+            break;
     }
 }
 
@@ -156,16 +153,18 @@ function activeGUI(e) {
             }, 7000);
         }
     }
-    if (isInside(mousePos, doorButtonRect)) {
-        if (doorOpened) {
-            gameAudio.src = './assets/sounds/door_key_lock.mp3';
-            gameAudio.play();
-        } else {
-            gameAudio.src = './assets/sounds/door_open.mp3';
-            gameAudio.play();
+    if (!camOpened) {
+        if (isInside(mousePos, doorButtonRect)) {
+            if (doorOpened) {
+                gameAudio.src = './assets/sounds/door_key_lock.mp3';
+                gameAudio.play();
+            } else {
+                gameAudio.src = './assets/sounds/door_open.mp3';
+                gameAudio.play();
+            }
+            doorOpened = !doorOpened;
+            doorOpenClose(doorOpened);
         }
-        doorOpened = !doorOpened;
-        doorOpenClose(doorOpened);
     }
 }
 
@@ -174,6 +173,12 @@ function camOpenClose(isCamOpened) {
         gameAudio.src = './assets/sounds/camera_off.mp3';
         gameAudio.play();
         document.getElementById('game').classList.add('off');
+        contextGUI.clearRect(
+            camBackButtonRect.x - 2,
+            camBackButtonRect.y - 2,
+            camNextButtonRect.x + camNextButtonRect.width - camBackButtonRect.x + 4,
+            camNextButtonRect.y + camNextButtonRect.height - camBackButtonRect.y + 4,
+        );
         setTimeout(function () {
             document.getElementById('game').classList.remove('off');
             doorOpenClose(doorOpened);
@@ -181,6 +186,8 @@ function camOpenClose(isCamOpened) {
     } else {
         gameAudio.src = './assets/sounds/camera_on.mp3';
         gameAudio.play();
+        drawButton(camBackButtonRect);
+        drawButton(camNextButtonRect);
         drawBackground(curRoom);
     }
 }
