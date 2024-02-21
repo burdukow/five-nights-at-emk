@@ -37,7 +37,7 @@ button_start.addEventListener('click', function () {
             } else {
                 drawTime(clock[clockIndex]);
             }
-        }, 60000);
+        }, 15000);
     }, 5000);
 });
 

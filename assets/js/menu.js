@@ -35,6 +35,20 @@ var maskButtonRect = {
     height: 50,
 };
 
+var camBackButtonRect = {
+    x: 700,
+    y: 640,
+    width: 50,
+    height: 50,
+};
+
+var camNextButtonRect = {
+    x: 755,
+    y: 640,
+    width: 50,
+    height: 50,
+};
+
 function drawButton(rect) {
     contextGUI.beginPath();
     contextGUI.rect(rect.x, rect.y, rect.width, rect.height);
@@ -119,6 +133,44 @@ function addCrtLines() {
         contextBg.fillStyle = 'rgba(0, 0, 0, .6)';
         contextBg.fillRect(0, y, canvasBg.width, 1);
     }
+}
+
+function playScreamer(animatronicName) {
+    setTimeout(() => {
+        switch (animatronicName) {
+            case 'ZamDir':
+                var image = new Image();
+                image.onload = function () {
+                    contextBg.fillStyle = 'rgba(0, 0, 0)';
+                    contextBg.fillRect(0, 0, canvasBg.width, canvasBg.width);
+                    contextGUI.fillStyle = 'rgba(0, 0, 0)';
+                    contextGUI.fillRect(0, 0, canvasBg.width, canvasBg.width);
+                    contextZone.fillStyle = 'rgba(0, 0, 0)';
+                    contextZone.fillRect(0, 0, canvasBg.width, canvasBg.width);
+                    contextGUI.drawImage(image, 0, 0);
+                };
+                image.src = './assets/img/animatronics/screamers/zamdir.gif';
+                break;
+            case 'Dima':
+                var image = new Image();
+                image.onload = function () {
+                    contextBg.fillStyle = 'rgba(0, 0, 0)';
+                    contextBg.fillRect(0, 0, canvasBg.width, canvasBg.width);
+                    contextGUI.fillStyle = 'rgba(0, 0, 0)';
+                    contextGUI.fillRect(0, 0, canvasBg.width, canvasBg.width);
+                    contextZone.fillStyle = 'rgba(0, 0, 0)';
+                    contextZone.fillRect(0, 0, canvasBg.width, canvasBg.width);
+                    contextGUI.drawImage(image, 0, 0);
+                };
+                image.src = './assets/img/animatronics/screamers/dima.gif';
+                break;
+        }
+        gameAudio.pause();
+        audio.src = './assets/sounds/screamer.mp3';
+        audio.loop = false;
+        audio.play();
+    }, 6000);
+    deathScreen();
 }
 
 function deathScreen() {
