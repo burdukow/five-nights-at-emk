@@ -104,9 +104,28 @@ function checkRoom(roomName) {
             if (gameMap.getAnimatronics(roomName).includes('Student')) {
                 gameAudio.src = './assets/sounds/static_camera.mp3';
                 gameAudio.play();
+                var image = new Image();
                 image.src = './assets/img/animatronics/student.png';
                 image.onload = function () {
                     contextZone.drawImage(image, 800, 350, 200, 200);
+                };
+            }
+            if (gameMap.getAnimatronics(roomName).includes('Katya')) {
+                gameAudio.src = './assets/sounds/static_camera.mp3';
+                gameAudio.play();
+                var image = new Image();
+                image.src = './assets/img/animatronics/katya.png';
+                image.onload = function () {
+                    contextZone.drawImage(image, 400, 400, 200, 200);
+                };
+            }
+            if (gameMap.getAnimatronics(roomName).includes('Dima')) {
+                gameAudio.src = './assets/sounds/static_camera.mp3';
+                gameAudio.play();
+                var image = new Image();
+                image.src = './assets/img/animatronics/dima.png';
+                image.onload = function () {
+                    contextZone.drawImage(image, 640, 340, 200, 200);
                 };
             }
             break;
@@ -121,6 +140,33 @@ function checkRoom(roomName) {
             }
             break;
         case 'main':
+            if (gameMap.getAnimatronics(roomName).includes('Student')) {
+                gameAudio.src = './assets/sounds/static_camera.mp3';
+                gameAudio.play();
+                var image = new Image();
+                image.src = './assets/img/animatronics/student.png';
+                image.onload = function () {
+                    contextZone.drawImage(image, 800, 350, 200, 200);
+                };
+            }
+            if (gameMap.getAnimatronics(roomName).includes('Katya')) {
+                gameAudio.src = './assets/sounds/static_camera.mp3';
+                gameAudio.play();
+                var image = new Image();
+                image.src = './assets/img/animatronics/katya.png';
+                image.onload = function () {
+                    contextZone.drawImage(image, 200, 420, 200, 200);
+                };
+            }
+            if (gameMap.getAnimatronics(roomName).includes('Dima')) {
+                gameAudio.src = './assets/sounds/static_camera.mp3';
+                gameAudio.play();
+                var image = new Image();
+                image.src = './assets/img/animatronics/dima.png';
+                image.onload = function () {
+                    contextZone.drawImage(image, 640, 340, 200, 200);
+                };
+            }
             break;
     }
 }
@@ -182,6 +228,7 @@ function camOpenClose(isCamOpened) {
         setTimeout(function () {
             document.getElementById('game').classList.remove('off');
             doorOpenClose(doorOpened);
+            checkRoom('main');
         }, 500);
     } else {
         gameAudio.src = './assets/sounds/camera_on.mp3';
