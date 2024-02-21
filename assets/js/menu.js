@@ -108,6 +108,7 @@ function drawBackground(room) {
                 drawProgressBar(vapeProgressRect, 'rgba(0,255,0,1)');
                 drawVapeCharge(vapeCharge);
             };
+            checkRoom(room);
             break;
         case 'A1':
             imageBg.src = './assets/img/rooms/A1.png';
